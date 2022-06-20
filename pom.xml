@@ -58,8 +58,6 @@
 						<environment>${env}</environment>
 						<objectStoreV2>true</objectStoreV2>
 					</cloudHubDeployment>
-				</configuration>
-				<configuration>
 					<coverage>
 						<runCoverage>true</runCoverage>
 						<formats>
