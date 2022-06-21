@@ -1,15 +1,17 @@
 # This workflow will build a MuleSoft project and deploy to CloudHub
 
-name: Single Pipeline
+name: Build and Deploy to Dev
 
 on:
   push:
-    branches: main
+    branches: [ main ]
   workflow_dispatch:
     
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     
     steps:
     
@@ -45,43 +47,3 @@ jobs:
       with:
           name: artifacts
           path: target/*.jar
-        
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment: 'dev'
-
-    steps:    
-    
-    - uses: actions/checkout@v2
-    
-    - uses: actions/cache@v1
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-    
-    - uses: actions/download-artifact@master
-      with:
-        name: artifacts
-    
-    - name: Deploy to Dev
-      env:
-        USERNAME: ${{ secrets.USERNAME }}
-        PASSWORD: ${{ secrets.PASSWORD }}
-        MULEVERSION: ${{ secrets.MULEVERSION }}
-        WORKERTYPE: ${{ secrets.WORKERTYPE }}
-        WORKERS: ${{ secrets.WORKERS }}
-        ENV: ${{ secrets.ENV_DEV}}
-      run: |
-        artifactName=$(ls *.jar | head -1)
-        mvn deploy -DmuleDeploy \
-         -Dmule.artifact=$artifactName \
-         -Danypoint.username="$USERNAME" \
-         -Danypoint.password="$PASSWORD" \
-         -DmuleVersion="$MULEVERSION"\
-         -DworkerType="$WORKERTYPE"\
-         -Dworkers="$WORKERS"\
-         -Denv="$ENV"\
-         -DskipTests
