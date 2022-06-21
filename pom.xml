@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mycompany</groupId>
-	<artifactId>git</artifactId>
+	<artifactId>sample_app</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
 
-	<name>git</name>
+	<name>GitHub</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,6 +30,20 @@
 				<artifactId>mule-maven-plugin</artifactId>
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
+				<configuration>
+					<classifier>mule-application</classifier>
+					<cloudHubDeployment>
+						<username>${username}</username>
+						<password>${password}</password>
+						<uri>https://anypoint.mulesoft.com</uri>
+						<muleVersion>${muleVersion}</muleVersion>
+						<applicationName>${appname}-${env}</applicationName>
+						<workers>${workers}</workers>
+						<workerType>${workerType}</workerType>
+						<environment>${env}</environment>
+						<objectStoreV2>true</objectStoreV2>
+					</cloudHubDeployment>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>com.mulesoft.munit.tools</groupId>
@@ -46,18 +60,6 @@
 					</execution>
 				</executions>
 				<configuration>
-					<classifier>mule-application</classifier>
-					<cloudHubDeployment>
-						<username>${username}</username>
-						<password>${password}</password>
-						<uri>https://anypoint.mulesoft.com</uri>
-						<muleVersion>${muleVersion}</muleVersion>
-						<applicationName>Git-${env}</applicationName>
-						<workers>${workers}</workers>
-						<workerType>${workerType}</workerType>
-						<environment>${env}</environment>
-						<objectStoreV2>true</objectStoreV2>
-					</cloudHubDeployment>
 					<coverage>
 						<runCoverage>true</runCoverage>
 						<formats>
